@@ -1,4 +1,4 @@
-const { assert, expect } = require("chai")
+const { assert } = require("chai")
 const { ethers, deployments } = require("hardhat")
 
 describe("Fund", function () {
@@ -6,27 +6,31 @@ describe("Fund", function () {
     let fund
 
     beforeEach(async () => {
-        deployer = (await getNamedAccounts()).deployer
-        await deployments.fixture(["fund"])
-        const snapFundContract = await deployments.get("Fund")
-        fund = await ethers.getContractAt(
-            snapFundContract.abi,
-            snapFundContract.address,
-        )
+        // deploy contract
+        const accounts = await ethers.getSigners()
+        deployer = accounts[0]
+        fund = await ethers.deployContract("Fund", deployer)
+
+        // Use hardhat-deploy
+        // deployer = (await getNamedAccounts()).deployer
+        // await deployments.fixture(["fund"])
+        // const snapFundContract = await deployments.get("Fund")
+        // fund = await ethers.getContractAt("Fund", snapFundContract.address)
+        // console.log(deployer)
     })
 
     describe("fund", function () {
         it("Adds the amount fund", async function () {
             const sendValue = 1
             await fund.fund({ value: sendValue })
-            const response = await fund.addressToAmounts(deployer)
+            const response = await fund.addressToAmounts(deployer.address)
             assert.equal(sendValue, response)
         })
 
         it("Adds array of funders", async function () {
             await fund.fund({ value: 1 })
             const response = await fund.funders(0)
-            assert.equal(response, deployer)
+            assert.equal(response, deployer.address)
         })
     })
 })
