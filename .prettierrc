@@ -2,5 +2,17 @@
     "sigleQuoute": true,
     "semi": false,
     "useTabs": false,
-    "tabWidth": 4
+    "tabWidth": 4,
+    "plugins": ["prettier-plugin-solidity"],
+    "overrides": [
+      {
+        "files": "*.sol",
+        "options": {
+            "parser": "solidity-parse",
+            "printWidth": 80,
+            "useTabs": false,
+            "bracketSpacing": false
+        }
+      }
+    ]
 }
