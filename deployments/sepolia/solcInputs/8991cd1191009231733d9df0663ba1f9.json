@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Fund.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.19;\n\ncontract Fund {\n    address public owner;\n    address[] public funders;\n    mapping(address => uint256) public addressToAmounts;\n    uint256 public test;\n\n    modifier onlyOwner() {\n        require(msg.sender == owner);\n        _;\n    }\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    receive() external payable {}\n\n    function fund() public payable {\n        addressToAmounts[msg.sender] += msg.value;\n        funders.push(msg.sender);\n    }\n\n    function withdraw() public onlyOwner {\n        for (uint i = 0; i < funders.length; i++) {\n            address funder = funders[i];\n            addressToAmounts[funder] = 0;\n        }\n\n        funders = new address[](0);\n\n        (bool success, ) = owner.call{value: address(this).balance}(\"\");\n        require(success);\n    }\n\n    function getMyFundedAmounts() public view returns (uint256) {\n        return addressToAmounts[msg.sender];\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
