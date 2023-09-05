@@ -14,8 +14,8 @@ describe("Fund", function () {
         // Use hardhat-deploy
         // deployer = await getNamedAccounts()
         // await deployments.fixture(["fund"])
-        // const snapFundContract = await deployments.get("Fund")
-        // fund = await ethers.getContractAt("Fund", snapFundContract.address)
+        // const fund = await deployments.get("Fund")
+        // fundContract = await ethers.getContractAt("Fund", fund.address)
     })
 
     describe("fund", function () {

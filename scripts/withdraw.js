@@ -1,4 +1,4 @@
-const { ethers, deployments, getNamedAccounts } = require("hardhat")
+const { ethers, deployments } = require("hardhat")
 
 async function main() {
     const signers = await ethers.getSigners()
