@@ -18,6 +18,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     log(`Fund deployed at ${fund.address}`)
 
+    // verify contract on live netwrok
     if (
         !developmentChains.includes(network.name) &&
         process.env.ETHERSCAN_API_KEY
