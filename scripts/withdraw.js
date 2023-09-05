@@ -1,7 +1,6 @@
 const { ethers, deployments, getNamedAccounts } = require("hardhat")
 
 async function main() {
-    const { deployer } = await getNamedAccounts()
     const signers = await ethers.getSigners()
     const fund = await deployments.get("Fund")
     const fundContract = await ethers.getContractAt("Fund", fund.address)
@@ -19,8 +18,7 @@ async function main() {
     console.log(`Withdraw Funded Amount...`)
     const response = await fundContract.withdraw()
     const reciept = await response.wait()
-    const balance = await ethers.provider.getBalance(deployer)
-    console.log(ethers.formatEther(balance))
+    console.log(reciept)
 }
 
 main()
