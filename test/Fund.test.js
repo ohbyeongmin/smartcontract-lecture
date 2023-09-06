@@ -6,16 +6,10 @@ describe("Fund", function () {
     let fundContract
 
     beforeEach(async () => {
-        // deploy contract
-        const accounts = await ethers.getSigners()
-        deployer = accounts[0]
-        fundContract = await ethers.deployContract("Fund", deployer)
-
-        // Use hardhat-deploy
-        // deployer = await getNamedAccounts()
-        // await deployments.fixture(["fund"])
-        // const fund = await deployments.get("Fund")
-        // fundContract = await ethers.getContractAt("Fund", fund.address)
+        deployer = (await getNamedAccounts()).deployer
+        await deployments.fixture(["fund"])
+        const fund = await deployments.get("Fund")
+        fundContract = await ethers.getContractAt("Fund", fund.address)
     })
 
     describe("fund", function () {
@@ -24,14 +18,14 @@ describe("Fund", function () {
 
             await fundContract.fund({ value: sendValue })
 
-            const response = await fund.addressToAmounts(deployer.address)
+            const response = await fundContract.addressToAmounts(deployer)
             assert.equal(sendValue, response)
         })
 
         it("Adds array of funders", async function () {
             await fundContract.fund({ value: ethers.parseEther("0.1") })
-            const response = await fund.funders(0)
-            assert.equal(response, deployer.address)
+            const response = await fundContract.funders(0)
+            assert.equal(response, deployer)
         })
     })
 })
